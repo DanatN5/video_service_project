@@ -23,5 +23,6 @@ class PostVideo(BaseModel):
 class GetVideo(BaseModel):
     id: int
 
-
+class Status(BaseModel):
+    status: VideoStatus
 
