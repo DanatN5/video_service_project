@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from typing import List
 from pydantic import BaseModel, Field
 from .models import VideoStatus
 
@@ -20,8 +19,6 @@ class PostVideo(BaseModel):
     camera_number: int = Field(..., gt=0)
     location: str = Field(..., min_length=1)
 
-class GetVideo(BaseModel):
-    id: int
 
 class Status(BaseModel):
     status: VideoStatus

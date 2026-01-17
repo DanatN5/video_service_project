@@ -3,7 +3,7 @@ from sqlalchemy import select
 from fastapi import HTTPException, status
 from datetime import datetime
 from .models import Video, VideoStatus
-from .schemas import PostVideo, GetVideo, Status
+from .schemas import PostVideo, Status
 
 async def create_video(db: AsyncSession, video: PostVideo) -> Video:
     db_video = Video(
@@ -11,10 +11,11 @@ async def create_video(db: AsyncSession, video: PostVideo) -> Video:
         start_time=video.start_time,
         duration=video.duration,
         camera_number=video.camera_number,
-        location=video.location
+        location=video.location,
+        created_at=datetime.now()
     )
     db.add(db_video)
-    await db.commit
+    await db.commit()
     await db.refresh(db_video)
     return db_video
 
@@ -41,17 +42,18 @@ async def get_all_videos(db: AsyncSession,
     return videos.scalars().all()
 
 
-async def get_video(db: AsyncSession, id: GetVideo) -> Video:
-    query = select(Video).where(Video.id == id)
-    result = await db.execute(query)
-    video = result.scalars().one()
-    if not video:
+async def get_video(db: AsyncSession, id: int) -> Video:
+    try:
+        query = select(Video).where(Video.id == id)
+        result = await db.execute(query)
+        video = result.scalars().one()
+    except:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Нет видео с ID: {id}")
     return video
 
 
-async def update_video(db: AsyncSession, id: GetVideo, status: Status) -> Video | None:
+async def update_video(db: AsyncSession, id: int, status: Status) -> Video | None:
     video = await get_video(db, id)
     video.status = status
     await db.commit()
