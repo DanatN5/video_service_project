@@ -13,10 +13,10 @@ cd video_service_project
 2. Сконфигурируйте файл .env с со следущими переменными:
 
 ```
-POSTGRES_PASSWORD=postgress
+POSTGRES_PASSWORD=postgres
 POSTGRES_USER=postgres
 POSTGRES_DB=videos
-DATABASE_URL=postgresql+asyncpg://postgres:postgress@db:5432/videos
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/videos
 ```
 
 3. Запуск через Docker Compose:

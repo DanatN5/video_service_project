@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import NoResultFound
 from sqlalchemy import select
 from fastapi import HTTPException, status
 from datetime import datetime
@@ -38,11 +39,11 @@ async def get_all_videos(db: AsyncSession, filters: FiltersBase):
 
 
 async def get_video(db: AsyncSession, id: int) -> Video:
+    query = select(Video).where(Video.id == id)
     try:
-        query = select(Video).where(Video.id == id)
         result = await db.execute(query)
         video = result.scalars().one()
-    except:
+    except NoResultFound:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Нет видео с ID: {id}")
     return video
