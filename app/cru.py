@@ -25,9 +25,9 @@ async def get_all_videos(db: AsyncSession, filters: FiltersBase):
     if filters.status:
         query = query.where(Video.status.in_(filters.status))
     if filters.camera_number:
-        query = query.where(Video.camera_number == filters.camera_number)
+        query = query.where(Video.camera_number.in_(filters.camera_number))
     if filters.location:
-        query = query.where(Video.location == filters.location)
+        query = query.where(Video.location.in_(filters.location))
     if filters.start_time_from:
         query = query.where(Video.start_time > filters.start_time_from)
     if filters.start_time_to:

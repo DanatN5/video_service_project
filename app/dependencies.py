@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import Optional
 from fastapi import Query
 from .schemas import FiltersBase
 from .models import VideoStatus
